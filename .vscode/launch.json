@@ -1,0 +1,53 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Next.js: debug server-side",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "yarn run dev"
+        },
+        {
+            "name": "Next.js: debug client-side",
+            "type": "pwa-chrome",
+            "request": "launch",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/src",
+            "sourceMaps": true
+        },
+        {
+            "name": "Next.js: debug full stack",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "yarn run dev",
+            "console": "integratedTerminal",
+            "serverReadyAction": {
+                "pattern": "started server on .+, url: (https?://.+)",
+                "uriFormat": "%s",
+                "action": "debugWithChrome"
+            },
+            "sourceMaps": true
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Next: Node",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "cwd": "${workspaceFolder}/src",
+            "port": 9229
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Next: Chrome",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/src",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "webpack://_N_E/*": "${webRoot}/*"
+            }
+        }
+    ]
+}

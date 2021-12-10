@@ -1,57 +1,86 @@
-import Head from 'next/head'
-import { AppProps } from 'next/app'
-import '../styles/index.css'
-import Amplify, { Auth } from 'aws-amplify';
-// import awsconfig from './aws-exports';
-// Amplify.configure(awsconfig);
+import React, { useEffect, useContext, createContext, useReducer } from 'react';
+import { AppProps } from 'next/app';
+import { useRouter } from 'next/router';
+import produce from 'immer';
+
+import Head from 'next/head';
+import Amplify, { API, Storage, Auth, Hub, withSSRContext } from 'aws-amplify';
+
 
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
-// Auth.federatedSignIn(
-//   domain,
-//   {
-//       token,
-//       identity_id, // Optional
-//       expires_at: expiresIn * 1000 + new Date().getTime() // the expiration timestamp
-//   },
-//   user
-// ).then(cred => {
-//   // If success, you will get the AWS credentials
-//   console.log(cred);
-//   return Auth.currentAuthenticatedUser();
-// }).then(user => {
-//   // If success, the user object you passed in Auth.federatedSignIn
-//   console.log(user);
-// }).catch(e => {
-//   console.log(e)
-// });
+
+// https://github.com/aws-amplify/amplify-js/issues/222
+// import awsExports from '../aws-exports';
+// Amplify.configure(awsExports);
+
+import config from '../aws-exports';
+// import './globals.scss';
+import awsconfig from '../aws-config/awsconfig.json'
+import awsauth from '../aws-config/awsauth.json'
+
+Amplify.configure({
+  ...config,
+  ssr: true,
+});
 
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth/lib/types';
 
 
+function App({ isPassedToWithAuthenticator, signOut, user }) {
+  if (!isPassedToWithAuthenticator) {
+    console.log(`isPassedToWithAuthenticator was not provided`);
+  }
 
 
-function MyApp({ Component, pageProps, signOut, user }) {
   return (
     <>
-      <Head>
-        <title>NextJS TailwindCSS TypeScript Starter</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
-      <Component {...pageProps} />
-      <h1>Hello {user.username}</h1>
-      <button onClick={signOut}>Sign out</button>
-      <button
-     type="button"
-     onClick={() => Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Cognito})}>
-     Sign In with Cognito
-    </button>
+      {/* <h1>Hello {user.username}</h1>
+      <button onClick={signOut}>Sign out</button> */}
+
+      {/* <button
+          type="button"
+          onClick={() => Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Cognito})}>
+          Sign In with Cognito
+      </button> */}
+      <button onClick={() => Auth.federatedSignIn()}>Open Hosted UI</button>
     </>
-  )
+  );
 }
 
-export default withAuthenticator(MyApp);
+export default App;
+
+export async function getStaticProps() {
+  return {
+    props: {
+      isPassedToWithAuthenticator: true,
+    },
+  };
+}
+
+// Auth.currentAuthenticatedUser().then(user => {
+//   console.log('currentAuthenticatedUser', user)
+//   this.setState({ user})
+// }).catch(() => console.log('Not signed in'))
+
+export async function componentDidMount () {
+  Amplify.configure(awsconfig)
+  Auth.configure({ oauth: awsauth })
+  Hub.listen('auth', ({ payload: { event, data } }) => {
+    switch (event) {
+      case 'signIn':
+        console.log('sign in', event, data)
+        // this.setState({ user: data})
+        break
+      case 'signOut':
+        console.log('sign out')
+        // this.setState({ user: null })
+        break
+    }
+  })
+}
+
 
 
 
