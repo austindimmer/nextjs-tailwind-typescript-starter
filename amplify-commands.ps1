@@ -19,6 +19,10 @@ amplify upgrade
 
 cYj353P#%8vx
 
+# https://docs.amplify.aws/lib/auth/getting-started/q/platform/js/#configure-your-application
+npm install aws-amplify
+npm install aws-amplify @aws-amplify/ui-react
+
 amplify pull --appId d95d1zoj32dow --envName staging
 amplify add storage
 amplify add auth
