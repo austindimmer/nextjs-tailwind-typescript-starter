@@ -1,0 +1,44 @@
+version: 1
+applications:
+  - frontend:
+      phases:
+        build:
+          commands: [
+
+          ]
+      artifacts:
+        baseDirectory: /
+        files:
+          - '**/*'
+      cache:
+        paths: []
+    appRoot: src
+              
+    
+# the following works for react site cognito integration monorepo config
+# version: 1
+# # https://docs.aws.amazon.com/amplify/latest/userguide/build-settings.html 
+# applications:
+#   - appRoot: website
+#     # backend:
+#     #   phases:
+#     #     build:
+#     #       commands:
+#     #         - '# Execute Amplify CLI with the helper script'
+#     #         - amplifyPush --simple
+#     frontend:
+#       phases:
+#         preBuild:
+#           commands:
+#             - yarn install --frozen-lockfile
+#             #- amplify init --appId d1v3fj4iksp1gp
+#         build:
+#           commands:
+#             - yarn build
+#       artifacts:
+#         baseDirectory: build
+#         files:
+#           - "**/*"
+#       cache:
+#         paths:
+#           - node_modules/**/*

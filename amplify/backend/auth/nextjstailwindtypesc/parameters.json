@@ -1,0 +1,31 @@
+{
+  "authSelections": "userPoolOnly",
+  "resourceName": "nextjstailwindtypesc",
+  "serviceType": "imported",
+  "region": "eu-west-1",
+  "aliasAttributes": [
+    "phone_number"
+  ],
+  "authProvidersUserPool": [],
+  "requiredAttributes": [
+    "given_name",
+    "family_name",
+    "preferred_username",
+    "email",
+    "phone_number"
+  ],
+  "passwordPolicyMinLength": 8,
+  "passwordPolicyCharacters": [
+    "Requires Lowercase",
+    "Requires Uppercase",
+    "Requires Numbers"
+  ],
+  "mfaConfiguration": "OPTIONAL",
+  "autoVerifiedAttributes": [
+    "email",
+    "phone_number"
+  ],
+  "mfaTypes": [
+    "SMS Text Message"
+  ]
+}
