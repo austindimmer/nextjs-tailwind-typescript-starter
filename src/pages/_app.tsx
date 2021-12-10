@@ -2,8 +2,8 @@ import Head from 'next/head'
 import { AppProps } from 'next/app'
 import '../styles/index.css'
 import Amplify, { Auth } from 'aws-amplify';
-import awsconfig from './aws-exports';
-Amplify.configure(awsconfig);
+// import awsconfig from './aws-exports';
+// Amplify.configure(awsconfig);
 
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
